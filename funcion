@@ -1,0 +1,144 @@
+def menu():
+    print("""
+    \t***MENÚ***
+    1.Stock Marca
+    2.Busqueda por precio
+    3.actualizar precio
+    4.Salir
+    """)
+    op = input('Ingrese su opción: ')
+    return op
+
+#Cantidad de modelos por marca
+def cantidadModelosXMarca():
+    contador = 0
+    marca = input('Ingrese marca que desea buscar: ')
+    for lista in NtBook.values():
+        if marca.lower() == lista[0].lower():
+           contador += 1 
+    #fuera del ciclo veo si contó algo
+    if contador != 0:
+        print(f'Hay {contador} modelo(s) de la marca {marca}.')   
+    else:
+        print(f'No tenemos disponibles modelo de la marca {marca}.')
+
+
+def cantidadnotebooksXMarca():
+    totalnt = 0
+    marca = input('Ingrese marca que desea buscar: ')
+    for clave, valor in NtBook.items():
+        if marca.lower() == valor[0].lower():
+            totalPatines += inventario[clave][1]   
+    #fuera del ciclo veo si contó algo
+    if totalnt != 0:
+        print(f'Hay {totalnt} notebooks de la marca {marca}.')   
+    else:
+        print(f'No tenemos notebooks disponibles de la marca {marca}.')
+
+
+
+#Búsqueda por rango de precio
+def buscarXRangoPrecio():
+    encontrado = False
+    pMin = validaNmr(int, 'Ingrese precio mínimo: ','Precio debe ser Mayor a CERO', 'Precio es un número',0)
+    pMax = validaNmr(int, 'Ingrese precio máximo: ','Precio debe ser Mayor ' + str(pMin), 'Precio es un número',pMin)
+    for clave, valor in inventario.items():
+        if valor[0] >= pMin and valor[0] <= pMax:
+            print(f'Valor Notebook: ${valor[0]} - {NtBook[clave]}')
+            encontrado = True
+    if  not encontrado:
+        print('No se encontraron Notebooks en el rango de precio.')
+
+
+
+
+#Actualizar precio 
+def actualizar():
+    existe = True
+    opcion = validaNmr(int,'1.- Actualizar Precio: ', 
+                       'Opción NO existe.', 
+                       'Opción es un número',
+                       1,2)
+    
+    while existe:
+        codigo = input('Ingrese Código: ').upper()
+        if codigo in inventario:
+            existe = False
+        else:
+            print('Código de producto NO Existe!!')
+
+    if opcion == 1: 
+        nuevoPrecio = validaNmr(int,'Ingrese nuevo precio: ', 'Precio debe ser mayor a CERO', 'Precio es un número',1)
+        inventario[codigo][0] = nuevoPrecio
+        print('Precio Actualizado')
+    
+  
+        
+#función para validad números
+def validaNmr(tipo, txtIn, txtError, txtExep, vMin=None, vMax=None):
+    repite = True
+    while repite:
+        try:
+            nmr = tipo(input(txtIn))
+            if vMin != None and vMax != None:
+                if nmr >= vMin and nmr <= vMax:
+                    repite = False
+                else:
+                    print(txtError)
+            elif vMin != None:
+                if vMin <= nmr:
+                    repite = False
+                else:
+                    print(txtError)
+            elif vMax != None:
+                if vMax >= nmr:
+                    repite = False
+                else:
+                    print(txtError)
+            else:
+                repite = False
+        except:
+            print(txtExep)
+    return nmr
+
+
+NtBook = {
+'8475HD': ['HP', 15.6, '8GB','DD', '1TB', 'Intel Core i5',  'Nvidia GTX1050'],
+'2175HD': ['lenovo', 14, '4GB',  'SSD', '512GB', 'Intel Core i5',  'Nvidia GTX1050'],
+'JjfFHD': ['Asus', 14, '16GB',  'SSD', '256GB', 'Intel Core i7', 'Nvidia RTX2080 TI'],
+'fgdxFHD': ['HP', 15.6, '8GB',  'DD', '1TB', 'Intel Core i3',  'integrada'],
+'GF75HD': ['Asus', 15.6, '8GB',  'DD', '1TB', 'Intel Core i7',  'Nvidia GTX1050'],
+'123FHD': ['lenovo', 14, '6GB',  'DD', '1TB', 'AMD Ryzen 5',  'integrada'],
+'342FHD': ['lenovo', 15.6, '8GB',  'DD', '1TB', 'AMD Ryzen 7',  'Nvidia GTX1050'],
+'UWU131HD': ['dell', 15.6, '8GB',  'DD', '1TB', 'AMD Ryzen 3',  'Nvidia GTX1050'],
+}
+inventario = {
+'8475HD': [387990, 10],
+'2175HD': [327990, 4],
+'JjfFHD': [424990, 1],
+'fgdxFHD': [664990, 21],
+'GF75HD': [749990, 2],
+'123FHD': [290890, 32],
+'342FHD': [444990, 7],
+'UWU131HD': [349990, 1]
+}
+
+opc = ''
+while opc != '4':
+    #llamado a fc menu
+    opc = menu()
+    if opc == '4':
+        print('Programa Terminado!!!')
+    elif opc == '1':
+        print('1.Stock Marca')
+        cantidadModelosXMarca()
+    elif opc == '2':
+        print('2.Busqueda por precio')
+        buscarXRangoPrecio()
+    elif opc == '3':
+        print('3.Actualizar Precio')
+        actualizar()
+
+
+    else:
+        print('Error: Opción NO Existe!!!')
